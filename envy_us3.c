@@ -1,52 +1,51 @@
 #include "main.h"
 
 /**
- * get_environ - upw Get the val of an env var.
- * @envname: khggu.
- * @_env: Array.
+ * Get the value of an environment variable.
+ * @env_name: Name of the environment variable.
+ * @_env: Array of environment variables.
  *
- * Return: null or pointer
+ * Return: NULL or pointer to value.
  */
-char *get_environ(const char *envname, char **_env)
+char *get_environment(const char *env_name, char **_env)
 {
 	char *ptr_env;
-	int y, m;
+	int offset, y;
 
 	/* Initialize ptr_env value */
 	ptr_env = NULL;
-	m = 0;
+	offset = 0;
 	/* Compare all environment variables */
-	/* environ is declared in the header file */
+	/* The _env array is declared in the header file */
 	for (y = 0; _env[y]; y++)
 	{
-		/* If name and env are equal */
-		m = compare_envname(_env[y], envname);
-		if (m)
+		/* If name and env_name are equal */
+		offset = compare_envname(_env[y], env_name);
+		if (offset)
 		{
 			ptr_env = _env[y];
 			break;
 		}
 	}
 
-	return (ptr_env + m);
+	return (ptr_env + offset);
 }
 
 /**
- * display_env - display env .
- * @data_sh: data struct
+ * Display environment variables.
+ * @data_sh: Data structure.
  * Return: 1 or 0.
  */
-int display_env(shll_comm *data_sh)
+int display_environment(shll_comm *data_sh)
 {
-	int k, s;
+	int idx, len;
 
-	for (k = 0; data_sh->_env[k]; k++)
+	for (idx = 0; data_sh->_env[idx]; idx++)
 	{
-
-		for (s = 0; data_sh->_env[k][s]; s++)
+		for (len = 0; data_sh->_env[idx][len]; len++)
 			;
 
-		write(STDOUT_FILENO, data_sh->_env[k], s);
+		write(STDOUT_FILENO, data_sh->_env[idx], len);
 		write(STDOUT_FILENO, "\n", 1);
 	}
 	data_sh->stat = 0;
@@ -55,52 +54,52 @@ int display_env(shll_comm *data_sh)
 }
 
 /**
- * _getline - Read inp
- * @lnptr: pointer
- * @num: size
- * @filestream: Stream to read
+ * Read input line from a file stream.
+ * @lnptr: Pointer to the line buffer.
+ * @num: Size of the buffer.
+ * @file_stream: Stream to read from.
  *
- * Return: The num of byt
+ * Return: The number of bytes read.
  */
-ssize_t _getline(char **lnptr, size_t *num, FILE *filestream)
+ssize_t _getline(char **lnptr, size_t *num, FILE *file_stream)
 {
 	int ind;
-	static ssize_t inp;
+	static ssize_t input_count;
 	ssize_t retval;
 	char *buf;
-	char t = 'z';
+	char temp_char = 'z';
 
-	if (inp == 0)
-		fflush(filestream);
+	if (input_count == 0)
+		fflush(file_stream);
 	else
 		return (-1);
-	inp = 0;
+	input_count = 0;
 
 	buf = malloc(sizeof(char) * BUFSIZE);
 	if (buf == 0)
 		return (-1);
-	while (t != '\n')
+	while (temp_char != '\n')
 	{
-		ind = read(STDIN_FILENO, &t, 1);
-		if (ind == -1 || (ind == 0 && inp == 0))
+		ind = read(STDIN_FILENO, &temp_char, 1);
+		if (ind == -1 || (ind == 0 && input_count == 0))
 		{
 			free(buf);
 			return (-1);
 		}
-		if (ind == 0 && inp != 0)
+		if (ind == 0 && input_count != 0)
 		{
-			inp++;
+			input_count++;
 			break;
 		}
-		if (inp >= BUFSIZE)
-			buf = _realloc(buf, inp, inp + 1);
-		buf[inp] = t;
-		inp++;
+		if (input_count >= BUFSIZE)
+			buf = _realloc(buf, input_count, input_count + 1);
+		buf[input_count] = temp_char;
+		input_count++;
 	}
-	buf[inp] = '\0';
-	get_ln(lnptr, num, buf, inp);
-	retval = inp;
+	buf[input_count] = '\0';
+	get_line(lnptr, num, buf, input_count);
+	retval = input_count;
 	if (ind != 0)
-		inp = 0;
+		input_count = 0;
 	return (retval);
 }

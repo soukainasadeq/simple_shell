@@ -1,31 +1,31 @@
 #include "main.h"
 
 /**
- * verify_env - verify if the variable is envir var.
- * @hd: the head.
- * @inp: Inp str feww.
- * @shell_data: Data shell.
+ * Verify if the variable is an environment variable.
+ * @hd: Pointer to the head of variables.
+ * @inp: Input string.
+ * @shell_data: Shell data.
  *
- * Return: void value.
+ * Return: Void.
  */
 void verify_env(r_var **hd, char *inp, shll_comm *shell_data)
 {
-	int l, cha, y, l_value;
-	char **_env;
+	int len, cha, y, len_value;
+	char **environment;
 
-	_env = shell_data->_env;
-	for (l = 0; _env[l]; l++)
+	environment = shell_data->_env;
+	for (len = 0; environment[len]; len++)
 	{
-		for (y = 1, cha = 0; _env[l][cha]; cha++)
+		for (y = 1, cha = 0; environment[len][cha]; cha++)
 		{
-			if (_env[l][cha] == '=')
+			if (environment[len][cha] == '=')
 			{
-				l_value = _strlen(_env[l] + cha + 1);
-				add_var_nd(hd, y, _env[l] + cha + 1, l_value);
+				len_value = _strlen(environment[len] + cha + 1);
+				add_var_nd(hd, y, environment[len] + cha + 1, len_value);
 				return;
 			}
 
-			if (inp[y] == _env[l][cha])
+			if (inp[y] == environment[len][cha])
 				y++;
 			else
 				break;
@@ -42,13 +42,13 @@ void verify_env(r_var **hd, char *inp, shll_comm *shell_data)
 }
 
 /**
- * rpl_inp - lsjhuiosh.
- * @hd: jhygfdf.
- * @inp: Inp str.
+ * Replace input based on variables.
+ * @hd: Pointer to variables.
+ * @inp: Input string.
  * @new_inp: New input.
- * @numlen: New length uohod.
+ * @numlen: Length of new input.
  *
- * Return: sdfd Replaced string.
+ * Return: Replaced string.
  */
 char *rpl_inp(r_var **hd, char *inp, char *new_inp, int numlen)
 {
@@ -94,13 +94,13 @@ char *rpl_inp(r_var **hd, char *inp, char *new_inp, int numlen)
 }
 
 /**
- * verify_vars - verify if typvariable is $$ or $?
- * @header: hhhhhsd.
- * @inp: Inp str.
- * @str: string.
- * @datashell: Data shell.
+ * Verify if a variable is $$ or $?
+ * @header: Pointer to the header.
+ * @inp: Input string.
+ * @str: String.
+ * @datashell: Shell data.
  *
- * Return: nym of chractere.
+ * Return: Number of characters.
  */
 int verify_vars(r_var **header, char *inp, char *str, shll_comm *datashell)
 {
@@ -134,12 +134,13 @@ int verify_vars(r_var **header, char *inp, char *str, shll_comm *datashell)
 
 	return (y);
 }
+
 /**
- * compare_envname - Comp the envi
- * @name_env: dd Name of the env.
- * @name_ptr: efdName to comp.
+ * Compare environment names.
+ * @name_env: Name of the environment.
+ * @name_ptr: Name to compare.
  *
- * Return: 0 or bigger than 0.
+ * Return: 0 or greater than 0.
  */
 int compare_envname(const char *name_env, const char *name_ptr)
 {

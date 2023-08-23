@@ -1,63 +1,63 @@
 #include "main.h"
 
 /**
- * replace_str - hhhhhhhhhhhhhhhhh hhhhhhhhhhh hhhhhhhhhh hh.
- * @inp: hhhhhhhh hhhh
- * @data_shell: rrrrrr bbbbbbe.
+ * Replace variables in a string.
+ * @inp: Input string.
+ * @data_shell: Shell data.
  *
- * Return: hhbb hbjsnjk sss
+ * Return: Replaced string.
  */
 char *replace_str(char *inp, shll_comm *data_shell)
 {
-	int oln, nln;
-	r_var *hd, *ind;
-	char *stat, *newinp;
+	int old_len, new_len;
+	r_var *var_list, *index;
+	char *status, *new_inp;
 
-	stat = conv_itoa(data_shell->stat);
-	hd = NULL;
+	status = conv_itoa(data_shell->stat);
+	var_list = NULL;
 
-	oln = verify_vars(&hd, inp, stat, data_shell);
+	old_len = verify_vars(&var_list, inp, status, data_shell);
 
-	if (hd == NULL)
+	if (var_list == NULL)
 	{
-		free(stat);
+		free(status);
 		return (inp);
 	}
 
-	ind = hd;
-	nln = 0;
+	index = var_list;
+	new_len = 0;
 
-	while (ind != NULL)
+	while (index != NULL)
 	{
-		nln += (ind->len_val - ind->len_var);
-		ind = ind->next;
+		new_len += (index->len_val - index->len_var);
+		index = index->next;
 	}
 
-	nln += oln;
+	new_len += old_len;
 
-	newinp = malloc(sizeof(char) * (nln + 1));
-	newinp[nln] = '\0';
+	new_inp = malloc(sizeof(char) * (new_len + 1));
+	new_inp[new_len] = '\0';
 
-	newinp = rpl_inp(&hd, inp, newinp, nln);
+	new_inp = rpl_inp(&var_list, inp, new_inp, new_len);
 
 	free(inp);
-	free(stat);
-	free_value_ls(&hd);
+	free(status);
+	free_value_ls(&var_list);
 
-	return (newinp);
+	return (new_inp);
 }
 
 /**
- * _unsetenv - hhhhhhhhhhhhhhhh hhhhhhhhhhhhhhh hhhhhhhhhhhh hhhhhhhhhh
- * @datash: sbhhhhhhhhh shbhsbjkbsjbhbs hsbjhbsbjks skjbkbnskksbh ns
+ * Unset an environment variable.
+ * @datash: Shell data.
  *
- * Return: hsbbhsbbshbs.
+ * Return: Success status.
  */
 int _unsetenv(shll_comm *datash)
 {
 	int i, k, z;
 	char **real_env;
-	char *varenv, *nmenv;
+	char *var_env, *name_env;
 
 	if (datash->args[1] == NULL)
 	{
@@ -67,13 +67,13 @@ int _unsetenv(shll_comm *datash)
 	z = -1;
 	for (i = 0; datash->_env[i]; i++)
 	{
-		varenv = _strdup(datash->_env[i]);
-		nmenv = _strtok(varenv, "=");
-		if (_strcmp(nmenv, datash->args[1]) == 0)
+		var_env = _strdup(datash->_env[i]);
+		name_env = _strtok(var_env, "=");
+		if (_strcmp(name_env, datash->args[1]) == 0)
 		{
 			z = i;
 		}
-		free(varenv);
+		free(var_env);
 	}
 	if (z == -1)
 	{
@@ -97,30 +97,30 @@ int _unsetenv(shll_comm *datash)
 }
 
 /**
- * set_env - kkkkkkkk kkkkkkkkkkk kkkkk k.
- * @environ_name: Njjjjj j jj j j jjjjjjjjjjjjjjje.
- * @val: bbbbbbbbbbb bbbbbbbbbbb bbbbbbbb
- * @data_sh: BBBBBBBBBBBVBBBBBB cccccccccccc hhhhhhhhhhhhhh hhhs.
+ * Set an environment variable.
+ * @environ_name: Name of the environment variable.
+ * @val: Value of the variable.
+ * @data_sh: Shell data.
  *
- * Return: jhdhbdhbj.
+ * Return: Void.
  */
 void set_env(char *environ_name, char *val, shll_comm *data_sh)
 {
 	int i;
-	char *vrenv, *nmnv;
+	char *var_env, *name_env;
 
 	for (i = 0; data_sh->_env[i]; i++)
 	{
-		vrenv = _strdup(data_sh->_env[i]);
-		nmnv = _strtok(vrenv, "=");
-		if (_strcmp(nmnv, environ_name) == 0)
+		var_env = _strdup(data_sh->_env[i]);
+		name_env = _strtok(var_env, "=");
+		if (_strcmp(name_env, environ_name) == 0)
 		{
 			free(data_sh->_env[i]);
-			data_sh->_env[i] = cp_info(nmnv, val);
-			free(vrenv);
+			data_sh->_env[i] = cp_info(name_env, val);
+			free(var_env);
 			return;
 		}
-		free(vrenv);
+		free(var_env);
 	}
 
 	data_sh->_env = _reallocdp(data_sh->_env, i, sizeof(char *) * (i + 2));
@@ -129,15 +129,13 @@ void set_env(char *environ_name, char *val, shll_comm *data_sh)
 }
 
 /**
- * _setenv - hddddd hd h hhhhhhhhhbbb bbb
- *           bbbbbbbb vvvvvvvvvv .
- * @data_sh: bbbbbbbbb sssssssssss sssssss ssssssss
+ * Set an environment variable (wrapper function).
+ * @data_sh: Shell data.
  *
- * Return: mmmmmmmm mmmm
+ * Return: Success status.
  */
 int _setenv(shll_comm *data_sh)
 {
-
 	if (data_sh->args[1] == NULL || data_sh->args[2] == NULL)
 	{
 		get_err(data_sh, -1);
@@ -150,25 +148,25 @@ int _setenv(shll_comm *data_sh)
 }
 
 /**
- * cp_info - nnnnnnnnnn nnnnnnnnnnnnnnnnn nnnnnnnnnnnnnnnn nnnnnnnnnn nnnnn n.
- * @alias_name: hhhhhhhhhhhhh hhhhhhhhhhhhhhhd bbbbbbbbdhb
- * @val: jjjjjjjjjj jjjjjjjjjjjjjjj sbbbbbbbbbbss s.
+ * Create an environment variable.
+ * @alias_name: Name of the alias.
+ * @val: Value of the alias.
  *
- * Return: mmmmmmmmm sllllllllls lllllllllslm
+ * Return: Created string.
  */
 char *cp_info(char *alias_name, char *val)
 {
-	char *nw;
-	int lenname, lenvalue, ln;
+	char *new_str;
+	int len_name, len_value, total_len;
 
-	lenname = _strlen(alias_name);
-	lenvalue = _strlen(val);
-	ln = lenname + lenvalue + 2;
-	nw = malloc(sizeof(char) * (ln));
-	_strcpy(nw, alias_name);
-	_strcat(nw, "=");
-	_strcat(nw, val);
-	_strcat(nw, "\0");
+	len_name = _strlen(alias_name);
+	len_value = _strlen(val);
+	total_len = len_name + len_value + 2;
+	new_str = malloc(sizeof(char) * total_len);
+	_strcpy(new_str, alias_name);
+	_strcat(new_str, "=");
+	_strcat(new_str, val);
+	_strcat(new_str, "\0");
 
-	return (nw);
+	return (new_str);
 }
