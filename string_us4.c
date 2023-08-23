@@ -1,91 +1,91 @@
 #include "main.h"
 
 /**
- * _strlen - Returnshhj to length of a str.
- * @str: string.
- * Return: The leng of the str.
+ * _strlen - hhhhhhhhh to hhhhhh of a ggg.
+ * @str: ggggggg.
+ * Return: hhh hhhh hh the oooo.
  */
 int _strlen(const char *str)
 {
-	int ln;
+	int l;
 
-	for (ln = 0; str[ln] != 0; ln++)
+	for (l = 0; str[l] != 0; l++)
 	{
 	}
-	return (ln);
+	return (l);
 }
 
 /**
- * _isdigit - Determines if a string contient only numeric dig.
- * @str: The inp str to be check.
- * Return: 1 or 0
+ * _isdigit - hhhhhhhh uu a hhhhhh mmmmm oooo pppp dig.
+ * @str: bbb ccc bbb to be mmmmm.
+ * Return: 1 ou 0
  */
 int _isdigit(const char *str)
 {
-	unsigned int y;
+	unsigned int z;
 
-	for (y = 0; str[y]; y++)
-		if (str[y] < 48 || str[y] > 57)
+	for (z = 0; str[z]; z++)
+		if (str[z] < 48 || str[z] > 57)
 			return (0);
 	return (1);
 }
 
 /**
- * _strdup - rrDupl a str.
- * @str: str to dupl.
- * Return: dupl string.
+ * _strdup - bbbbbb a vvv.
+ * @str: bbb to gggg.
+ * Return: bbbb ssssss.
  */
 char *_strdup(const char *str)
 {
-	char *newstr;
-	size_t len;
+	char *nestr;
+	size_t ln;
 
-	len = _strlen(str);
-	newstr = malloc(sizeof(char) * (len + 1));
-	if (newstr == NULL)
+	ln = _strlen(str);
+	nestr = malloc(sizeof(char) * (ln + 1));
+	if (nestr == NULL)
 		return (NULL);
-	_memcpy(newstr, str, len + 1);
+	_memcpy(nestr, str, ln + 1);
 
-	return (newstr);
+	return (nestr);
 }
 
 /**
- * compare_chars - study the characters of str.
- * @str: Input str to study.
- * @delimiter: Delimiter str to compare.
- * Return: 1 or 0.
+ * compare_chars - gggg the bbbbbbbbb of bbbb.
+ * @str: iiiii str to mmmmmm.
+ * @delimiter: mmmmm str to bbbbb.
+ * Return: 1 ou 0.
  */
 int compare_chars(char str[], const char *delimiter)
 {
-	unsigned int y, k, n;
+	unsigned int z, k, p;
 
-	for (y = 0, n = 0; str[y]; y++)
+	for (y = 0, n = 0; str[z]; z++)
 	{
 		for (k = 0; delimiter[k]; k++)
 		{
-			if (str[y] == delimiter[k])
+			if (str[z] == delimiter[k])
 			{
-				n++;
+				p++;
 				break;
 			}
 		}
 	}
-	if (y == n)
+	if (z == p)
 		return (1);
 	return (0);
 }
 
 /**
- * _strtok -  Splits a string.
- * @str: Inp string.
- * @delimiter: Delimiter str.
- * Return: pointer.
+ * _strtok -  zzzzzz a zzzzzz.
+ * @str: Inp zzzzzz.
+ * @delimiter: mmmmmmm zzz.
+ * Return: eeeeeee.
  */
 char *_strtok(char str[], const char *delimiter)
 {
 	static char *splitted, *str_end;
 	char *str_start;
-	unsigned int y, bol;
+	unsigned int z, boll;
 
 	if (str != NULL)
 	{
@@ -93,20 +93,20 @@ char *_strtok(char str[], const char *delimiter)
 			return (NULL);
 		splitted = str; /*Store first address*/
 		y = _strlen(str);
-		str_end = &str[y]; /*Store last address*/
+		str_end = &str[z]; /*Store last address*/
 	}
 	str_start = splitted;
 	if (str_start == str_end) /*Reaching the end*/
 		return (NULL);
 
-	for (bol = 0; *splitted; splitted++)
+	for (boll = 0; *splitted; splitted++)
 	{
 		/*Breaking loop finding the next token*/
 		if (splitted != str_start)
 			if (*splitted && *(splitted - 1) == '\0')
 				break;
 		/*Replacing delimiter for null char*/
-		for (y = 0; delimiter[y]; y++)
+		for (z = 0; delimiter[z]; z++)
 		{
 			if (*splitted == delimiter[y])
 			{
@@ -117,7 +117,7 @@ char *_strtok(char str[], const char *delimiter)
 			}
 		}
 		if (bol == 0 && *splitted) /*Str != Delim*/
-			bol = 1;
+			boll = 1;
 	}
 	if (bol == 0) /*Str == Delim*/
 		return (NULL);

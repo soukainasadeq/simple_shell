@@ -1,24 +1,24 @@
 #include "main.h"
 
 /**
- * rev_string - converses the char in a given str.
- * @s: The input string to be conversed.
- * Return: nothing
+ * rev_string - converts the zzzz in a zzzzzz szz.
+ * @s: zzz zzzz zzzzz to be zzzzzzz.
+ * Return: zzzzzz
  */
 void rev_string(char *s)
 {
-	int cnt = 0, y, k;
+	int i = 0, y, k;
 	char *str, tmp;
 
-	while (cnt >= 0)
+	while (i >= 0)
 	{
-		if (s[cnt] == '\0')
+		if (s[i] == '\0')
 			break;
-		cnt++;
+		i++;
 	}
 	str = s;
 
-	for (y = 0; y < (cnt - 1); y++)
+	for (y = 0; y < (i - 1); y++)
 	{
 		for (k = y + 1; k > 0; k--)
 		{
